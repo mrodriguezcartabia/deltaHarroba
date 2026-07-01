@@ -35,8 +35,6 @@ def toggle_units():
         st.session_state.p_bar = 0.0
         st.session_state.df_corridas = pd.DataFrame([[0.0]*13 for _ in range(st.session_state.num_corridas)], columns=columnas_base)
         st.session_state.is_sample_data = False # Apagamos la bandera tras borrar
-        if 'editor_corridas' in st.session_state:
-            del st.session_state['editor_corridas']
 
 @st.dialog("Confirmar reemplazo")
 def confirmar_carga_muestra():
@@ -155,9 +153,20 @@ config_columnas = {
     "V_m_std": st.column_config.NumberColumn(f"Vm(sdt) [{u_vol}]", format="%.4f"),
     "V_cr_std": st.column_config.NumberColumn(f"Vcr(sdt) [{u_vol}]", format="%.4f"),
     "Y": st.column_config.NumberColumn(f"Y", format="%.4f"),
-    "delta_h_at": st.column_config.NumberColumn(f"ΔH@ {u_h2o}]", format="%.4f")
-    
+    "delta_h_at": st.column_config.NumberColumn(f"ΔH@ {u_h2o}]", format="%.4f")    
 }
+
+# Si el ususario cargó datos debemos guardarlos
+if "editor_corridas" in st.session_state:
+    ediciones = st.session_state["editor_corridas"].get("edited_rows", {})
+    for row_idx, cambios in ediciones.items():
+        for col_name, nuevo_valor in cambios.items():
+            col_idx = st.session_state.df_corridas.columns.get_loc(col_name)
+            st.session_state.df_corridas.iat[row_idx, col_idx] = nuevo_valor
+
+tm_avg, y_factor, delta_h_at = realizar_calculos(
+    st.session_state.df_corridas, p_bar, st.session_state.unit_system
+)
 
 # st.data_editor es la tabla interactiva de Streamlit
 tabla_excel = st.data_editor(
@@ -171,14 +180,10 @@ tabla_excel = st.data_editor(
     on_change=marcar_dato_manual
 )
 
-# ==========================================
-# PROCESAMIENTO Y RESULTADOS
-# ==========================================
+# Guardamos los datos
 st.session_state.df_corridas = tabla_excel
-tm_avg, y_factor, delta_h_at = realizar_calculos(
-    st.session_state.df_corridas, p_bar, st.session_state.unit_system
-)
 
+# Resultados
 st.markdown("---")
 col_final, col_res1, col_res2, _ = st.columns([1, 1, 1, 3])
 col_final.markdown("### Resultados")
