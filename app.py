@@ -40,11 +40,11 @@ def toggle_units():
 def confirmar_carga_muestra():
     st.warning("Ya tenés datos cargados manualmente en la tabla, ¿querés borrarlos y cargar los datos de muestra?")
     c1, c2 = st.columns(2)
-    if c1.button("Sí, cargar muestra", use_container_width=True):
+    if c1.button("Sí, cargar muestra.", use_container_width=True):
         cargar_datos_muestra(columnas_base)
         st.session_state.num_corridas = 8
         st.rerun()  # Recarga la app aplicando los cambios
-    if c2.button("Cancelar", use_container_width=True):
+    if c2.button("Cancelar.", use_container_width=True):
         st.rerun()  # Cierra la ventana sin hacer nada
 
 # ==========================================
@@ -53,15 +53,15 @@ def confirmar_carga_muestra():
 col_titulo, col_unidades, col_muestra, col_teoria = st.columns([3, 1, 1, 1])
 
 with col_titulo:
-    st.title("Calibración de Consola - Método 5")
+    st.title("Calibración de consola - Método 5")
 
 with col_unidades:
     st.write("")
     # Botón para cambiar unidades
     if st.session_state.unit_system == 'metrico':
-        st.button("Cambiar al Sistema Imperial", on_click=toggle_units, use_container_width=True)
+        st.button("Cambiar al sistema imperial", on_click=toggle_units, use_container_width=True)
     else:
-        st.button("Cambiar al Sistema Internacional", on_click=toggle_units, use_container_width=True)
+        st.button("Cambiar al sistema internacional", on_click=toggle_units, use_container_width=True)
 
 with col_muestra:
     st.write("")
@@ -102,11 +102,11 @@ with col_advertencia:
 
 col_amb1, col_amb2, col_amb3, col_amb4 = st.columns(4)
 with col_amb1:
-    temp_amb = st.number_input(f"Temperatura Ambiente [{u_temp}]", value=19.0, format="%.2f", step=0.1)
+    temp_amb = st.number_input(f"Temperatura ambiente [{u_temp}]", value=19.0, format="%.2f", step=0.1)
 with col_amb2:
     humedad = st.number_input("Humedad [%]", value=50.0, format="%.1f", step=1.0)
 with col_amb3:
-    p_bar = st.number_input(f"Presión Barométrica ($P_{{bar}}$) [{u_pres}]", format="%.2f", step=1.0, key="p_bar", on_change=marcar_dato_manual)
+    p_bar = st.number_input(f"Presión barométrica ($P_{{bar}}$) [{u_pres}]", format="%.2f", step=1.0, key="p_bar", on_change=marcar_dato_manual)
 with col_amb4:
     num_corridas = st.number_input("Cantidad de corridas (la normativa exige un mínimo de tres):", min_value=3, value=5, key="num_corridas", step=1)
 
@@ -185,18 +185,24 @@ st.session_state.df_corridas = tabla_excel
 
 # Resultados
 st.markdown("---")
-col_final, col_res1, col_res2, _ = st.columns([1, 1, 1, 3])
-col_final.markdown("### Resultados")
-col_res1.metric("Factor de Calibración ($Y$)", f"{y_factor:.4f}")
-col_res2.metric("Delta H@ ($\Delta H_@$)", f"{delta_h_at:.4f} {u_h2o}")
+col_final, col_res1, col_res2, _, col_exp = st.columns([1, 1, 1, 2, 1])
 
-#Exportación 
-#st.markdown("---")
-#pdf_bytes = generar_pdf(tabla_excel, p_bar, tm_avg, y_factor, delta_h_at, st.session_state.unit_system)
+with col_final: 
+    st.markdown("### Resultados")
 
-#st.download_button(
-#    label="📄 Imprimir un PDF con toda la información",
-#    data=pdf_bytes,
-#    file_name="Reporte_Calibracion_Metodo5.pdf",
-#    mime="application/pdf"
-#)
+with col_res1: 
+    st.metric("Factor de calibración ($Y$)", f"{y_factor:.4f}")
+
+with col_res2:
+    st.metric("Delta H@ ($\Delta H_@$)", f"{delta_h_at:.4f} {u_h2o}")
+
+#Exportación
+with col_exp:
+    pdf_bytes = generar_pdf(tabla_excel, p_bar, tm_avg, y_factor, delta_h_at, st.session_state.unit_system)
+
+    st.download_button(
+    label="Imprimir un PDF con toda la información",
+    data=pdf_bytes,
+    file_name="Reporte_Metodo5.pdf",
+    mime="application/pdf"
+    )
