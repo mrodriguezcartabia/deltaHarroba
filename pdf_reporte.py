@@ -19,7 +19,7 @@ def generar_pdf(df_corridas, p_bar, tm_avg, y_factor, delta_h_at, unit_system):
     
     # 3. Título y Fecha
     pdf.set_font("Arial", 'B', 16)
-    pdf.cell(0, 10, txt="Reporte de Calibración - EPA Método 5", ln=True, align='C')
+    pdf.cell(0, 10, txt="Reporte de calibración - EPA Método 5", ln=True, align='C')
     pdf.set_font("Arial", 'I', 10)
     pdf.cell(0, 6, txt=f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", ln=True, align='C')
     pdf.ln(5)
