@@ -139,7 +139,7 @@ st.session_state.df_corridas.index = range(1, num_corridas + 1)
 # Configuramos la visualización de la tabla para que tenga las unidades y formato correcto
 config_columnas = {
     "theta": st.column_config.NumberColumn("Tiempo  [min]", format="%.2f"),
-    "delta_H": st.column_config.NumberColumn(f"ΔH  [{u_h2o}]", format="%.2f"),
+    "delta_h": st.column_config.NumberColumn(f"ΔH  [{u_h2o}]", format="%.2f"),
     #"Vw": st.column_config.NumberColumn(f"Vw: volumen patrón húmedo [{u_vol}]", format="%.4f"),
     #"Vm": st.column_config.NumberColumn(f"Vm: volumen medidor [{u_vol}]", format="%.4f"),
     "vol_inicial": st.column_config.NumberColumn(f"Volumen inicial [{u_vol}]", format="%.3f"),

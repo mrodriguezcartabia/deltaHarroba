@@ -10,9 +10,10 @@ def teoria():
     """)
     st.latex(r"\Delta H_@ = \frac{0.0319 \  \Delta H}{P_{bar}(t_0 + 460)} \left[ \frac{(t_w+460) \ \theta}{V_w} \right]^2")
     st.markdown("""
-    dnde las condiciones de referencia para ΔH se eligieron como 0,75 $dcfm$ de aire a 68 $F$ y 29,92 $in.Hg$. De estos valores surge la constante ya que
+    dnde las condiciones de referencia para $ΔH$ se eligieron como 0,75 $dcfm$ de aire a 68 $F$ y 29,92 $in.Hg$. De estos valores surge la constante ya que
+    """)
     st.latex(r"\frac{0.75^2 \ 29.92}{68+460} = 0.031875 \sim 0.0319.")
-
+    st.markdown("""
     Nota: el manual *Maintenance Calibration And Operation Of Isokinetic Source-sampling Equipment* utiliza una constante levemente distinta porque trabaja a 70 $F$ en vez 
     de 68 $F$.      
     """)
@@ -25,11 +26,14 @@ def teoria():
     st.markdown("---")
 
     st.markdown("""
-    ### 2. Factor de Calibración de la Consola ($Y$) [Patrón húmedo]
+    ### 2. Factor de Calibración de la Consola ($Y$) mediante el coeficiente de orificio $K'$
     El factor $Y$ compara el volumen medido por el patrón húmedo frente al volumen de la consola, ajustado por presiones y **temperaturas absolutas**.
     """)
 
-    st.latex(r"Y = \frac{V_w \cdot P_{bar} \cdot T_m}{V_m \cdot (P_{bar} + \frac{\Delta H}{13.6}) \cdot T_w}")
+    st.latex(r"Y = \frac{V_{cr(sdt)}}{V_{m(sdt)}} = \frac{K' P_{bar} \theta}{\sqrt{T_{amb}}}\frac{T_m}{K_1 V_m (P_{bar}+\frac{Delta h}{13.6})}")
+    st.markdown("""
+    donde $K_1= T_{(std)}/P_{(std)}$.
+    """)
 
     st.markdown("""
     **Fuente:** 
